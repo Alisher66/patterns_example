@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Основной класс ComponentNote
+        class ComponentNote {
+            constructor(note) {
+                this.note = note;
+            }
+
+            getElement() {
+                const divEl = document.createElement("div");
+                divEl.textContent = this.note.title;
+
+                let note = this.note;
+
+                return {
+                    note,
+                    html: divEl,
+                };
+            }
+        }
+
+        let component1 = new ComponentNote({ id: 1, title: "news 1" });
+        console.log(component1);
+        console.log(component1.getElement());
+
+
+        // это Декоратор WidgetList
+
+        class WidgetList {
+            constructor(componentNote) {
+                this.componentNote = componentNote;
+            }
+
+            getElement() {
+                const element = this.componentNote.getElement();
+                element.html.className = "list-item";
+                element.html.dataset.id = element.note.id;
+                return element;
+            }
+        }
+
+        component1 = new WidgetList(component1);
+        console.log(component1.getElement());
+
+
+
+        // это Декоратор WidgetCategory
+        class WidgetCategory {
+            constructor(componentNote) {
+                this.componentNote = componentNote;
+            }
+
+            getElement() {
+                const element = this.componentNote.getElement();
+                element.html.className = "category-item";
+
+                return element;
+            }
+        }
+
+        component1 = new WidgetCategory(component1);
+        console.log(component1.getElement());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .form-wrap {
+            margin-bottom: 30px;
+        }
+
+        .img_wrap {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-wrap">
+            <input type="text" id="img_count" placeholder="image count">
+            <button id="img_show">Show random images</button>
+        </div>
+        <div class="img_wrap">
+            <div class="item">
+                <img src="https://picsum.photos/200/200?random=1" alt="">
+            </div>
+            <div class="item">
+                <img src="https://picsum.photos/200/200?random=2" alt="">
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        class ImageCard {
+            creat() {
+                return `
+                        <div class="item">
+                            <img src="${this.img}" alt="">
+                        </div>`;
+            }
+        }
+
+        const showBtn = document.querySelector("#img_show");
+        const imgWrap = document.querySelector(".img_wrap");
+        const countEl = document.querySelector("#img_count");
+
+        showBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            if (countEl.value == "") return;
+            imgWrap.innerHTML = "";
+
+            const cards = genetateCards(+countEl.value);
+            showItems(cards);
+            countEl.value = "";
+        });
+
+        function genetateCards(num = 5) {
+            const mainCard = new ImageCard();
+            if (num > 100) num = 100;
+
+            let arr = []
+
+            for (let i = 0; i < num; i++) {
+                const card = Object.create(mainCard, {
+                    img: {
+                        value: `https://picsum.photos/200/200?random=${randomNumber()}`,
+                    }
+                })
+                arr.push(card);
+            }
+            return arr;
+        }
+
+        function randomNumber(num = 100) {
+            return Math.random() * num;
+        }
+
+        function showItems(cards) {
+            cards.forEach(card => {
+                imgWrap.innerHTML += card.creat();
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>
